@@ -1,304 +1,187 @@
-# 🚗 Car Price Prediction System – MSRP Estimation
+# 🚗 Car Price Prediction System (MSRP Estimation)
 
-![Python](https://img.shields.io/badge/Python-3.x-blue)
-![Machine Learning](https://img.shields.io/badge/Machine%20Learning-Regression-orange)
-![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-ML-green)
-![Status](https://img.shields.io/badge/Project-Completed-success)
+A machine learning web application that predicts the Manufacturer's
+Suggested Retail Price (MSRP) of a car from its specifications.
+
+## 🌐 Live Demo
+
+**Streamlit App:** https://bkkegcp7lgqzgrc3oduv9k.streamlit.app/
 
 ## 📌 Project Overview
 
-The **Car Price Prediction System** is a Machine Learning project designed to predict the **Manufacturer's Suggested Retail Price (MSRP)** of a vehicle based on its specifications and characteristics.
+This project builds a regression model to estimate vehicle MSRP using
+manufacturer, model, engine, transmission, drivetrain, fuel type,
+vehicle size, and vehicle style information.
 
-The system uses vehicle attributes such as brand, model, manufacturing year, engine specifications, fuel type, transmission, drivetrain, MPG, vehicle style, and popularity to estimate the car's price.
+The final solution uses a Random Forest Regressor inside a complete
+scikit-learn pipeline.
 
-This project demonstrates the practical application of **Supervised Machine Learning and Regression** techniques in automotive price prediction.
+## ✨ Features
 
----
+-   🚘 Predict car MSRP from vehicle specifications
+-   🔤 One-hot encoding for categorical features
+-   📊 Standard scaling for numerical features
+-   🎯 Feature selection using SelectPercentile
+-   🌲 Random Forest regression
+-   🔄 Complete preprocessing + feature selection + model pipeline
+-   🌐 Interactive Streamlit application
+-   ☁️ Streamlit Community Cloud deployment
 
-## 🎯 Problem Statement
+## 🧰 Technologies Used
 
-The automobile market contains a wide variety of vehicles with different brands, specifications, and features, making accurate price estimation challenging.
-
-The goal of this project is to answer:
-
-> **Can we predict the price of a car based on its features such as engine specifications, fuel type, brand, and other attributes?**
-
----
-
-## 🎯 Objective
-
-The main objective is to build a **regression-based Machine Learning model** that can predict a vehicle's MSRP using its numerical and categorical features.
-
----
+-   Python
+-   Pandas
+-   NumPy
+-   Scikit-learn
+-   Joblib
+-   Streamlit
+-   Google Colab
+-   GitHub
+-   Streamlit Community Cloud
 
 ## 📊 Dataset
 
-The project uses the **CAR_MSRP** dataset.
+### Input Features
 
-### Dataset Characteristics
+**Categorical** - Make - Model - Engine Fuel Type - Transmission Type -
+Driven_Wheels - Market Category - Vehicle Size - Vehicle Style
 
-* **Domain:** Automotive / Pricing Analytics
-* **Records:** Thousands of car entries
-* **Features:** 10–15+ input features
-* **Feature Types:** Numerical and Categorical
-* **Target Variable:** MSRP
+**Numerical** - Year - Engine HP - Engine Cylinders - Number of Doors -
+highway MPG - city mpg - Popularity
 
----
+**Target** - MSRP
 
-## 🧾 Features
+## 🔄 Machine Learning Workflow
 
-| Feature           | Description                           | Type        |
-| ----------------- | ------------------------------------- | ----------- |
-| Make              | Brand/manufacturer of the car         | Categorical |
-| Model             | Specific vehicle model                | Categorical |
-| Year              | Manufacturing year                    | Numerical   |
-| Engine Fuel Type  | Type of fuel used                     | Categorical |
-| Engine HP         | Engine horsepower                     | Numerical   |
-| Engine Cylinders  | Number of engine cylinders            | Numerical   |
-| Transmission Type | Automatic or Manual                   | Categorical |
-| Driven Wheels     | FWD, RWD, AWD                         | Categorical |
-| Number of Doors   | Number of doors                       | Numerical   |
-| Vehicle Size      | Compact, Midsize, Large               | Categorical |
-| Vehicle Style     | Sedan, SUV, Coupe, Hatchback, etc.    | Categorical |
-| Highway MPG       | Highway fuel efficiency               | Numerical   |
-| City MPG          | City fuel efficiency                  | Numerical   |
-| Popularity        | Brand popularity score                | Numerical   |
-| MSRP              | Manufacturer's Suggested Retail Price | **Target**  |
-
----
-
-## 🔄 Project Workflow
-
-```text
-Data Collection
-      ↓
+``` text
+Raw Dataset
+    ↓
 Data Cleaning
-      ↓
-Exploratory Data Analysis
-      ↓
-Data Preprocessing
-      ↓
-Feature Engineering
-      ↓
-Encoding Categorical Variables
-      ↓
-Feature Selection
-      ↓
-Model Training
-      ↓
+    ↓
+Train-Test Split
+    ↓
+Categorical / Numerical Feature Separation
+    ↓
+One-Hot Encoding + Standard Scaling
+    ↓
+SelectPercentile Feature Selection
+    ↓
+Random Forest Regressor
+    ↓
+Complete ML Pipeline
+    ↓
 Model Evaluation
-      ↓
-MSRP Prediction
+    ↓
+Joblib Serialization
+    ↓
+Streamlit Web App
+    ↓
+Streamlit Community Cloud
 ```
 
----
+## 🤖 Final Model
 
-## 🔍 Exploratory Data Analysis
-
-Exploratory Data Analysis was performed to understand:
-
-* Distribution of car prices
-* Relationship between car features and MSRP
-* Impact of engine horsepower on price
-* Impact of manufacturing year on price
-* Relationship between MPG and price
-* Brand-wise price differences
-* Correlation between numerical features
-* Outliers and missing values
-
----
-
-## 🛠️ Technologies Used
-
-### Programming Language
-
-* Python
-
-### Libraries
-
-* Pandas
-* NumPy
-* Matplotlib
-* Seaborn
-* Scikit-learn
-
-### Machine Learning
-
-* Supervised Learning
-* Regression
-* Data Preprocessing
-* Feature Engineering
-* Model Evaluation
-
----
-
-## 🤖 Machine Learning Approach
-
-Since **MSRP is a continuous numerical variable**, this project is treated as a **Regression problem**.
-
-The general machine learning process includes:
-
-1. Loading the dataset
-2. Understanding the data
-3. Handling missing values
-4. Performing exploratory data analysis
-5. Preparing numerical and categorical features
-6. Encoding categorical variables
-7. Splitting data into training and testing sets
-8. Training the regression model
-9. Evaluating model performance
-10. Predicting MSRP for new vehicles
-
----
-
-## 📈 Model Evaluation
-
-The trained regression model can be evaluated using commonly used regression metrics such as:
-
-* **Mean Absolute Error (MAE)**
-* **Mean Squared Error (MSE)**
-* **Root Mean Squared Error (RMSE)**
-* **R² Score**
-
-These metrics help determine how accurately the model predicts vehicle prices.
-
-> Add your actual model performance values here after training the final model.
-
-Example:
-
-```text
-R² Score: XX.XX
-RMSE: XXXXX
-MAE: XXXXX
+``` python
+RandomForestRegressor(
+    n_estimators=200,
+    max_depth=20,
+    random_state=42
+)
 ```
 
----
+The complete preprocessing, feature selection, and model are stored in:
 
-## 💡 Business Applications
+``` text
+car_price_pipeline.pkl
+```
 
-A car price prediction system can be useful for:
+## 📈 Model Performance
 
-* 🚘 Helping customers make informed purchasing decisions
-* 🏪 Supporting dealerships with pricing strategies
-* 📊 Competitive market analysis
-* 🏭 Automotive product positioning
-* 🤝 Vehicle recommendation systems
-* 💰 Automated price estimation
+  Metric            Score
+  ---------- ------------
+  R² Score         0.9498
+  MAE          \$2,683.31
 
----
+## 🖥️ Streamlit Application
 
-## 📂 Project Structure
+The app accepts raw car details and returns an estimated MSRP.
 
-```text
-Car-Price-Prediction/
+The saved pipeline is loaded with Joblib:
+
+``` python
+pipeline = joblib.load("car_price_pipeline.pkl")
+prediction = pipeline.predict(input_data)[0]
+```
+
+## 📁 Repository Structure
+
+``` text
+Car-Price-Prediction-System-MSRP-Estimation-
 │
-├── dataset/
-│   └── CAR_MSRP.csv
-│
-├── notebooks/
-│   └── Car_Price_Prediction.ipynb
-│
-├── app/
-│   └── app.py
-│
+├── app.py
+├── car_price_pipeline.pkl
 ├── requirements.txt
 ├── README.md
-└── .gitignore
+├── Regression_project_EDA.ipynb
+├── car_MSRP.csv
+└── cleaned_csv.CSV
 ```
-
-> Modify the folder and file names according to the actual structure of your repository.
-
----
 
 ## ⚙️ Installation
 
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/koushik-badineni/Car-Price-Prediction.git
-```
-
-### 2. Navigate to the project directory
-
-```bash
-cd Car-Price-Prediction
-```
-
-### 3. Create a virtual environment
-
-```bash
-python -m venv venv
-```
-
-### 4. Activate the virtual environment
-
-**Windows:**
-
-```bash
-venv\Scripts\activate
-```
-
-**Mac/Linux:**
-
-```bash
-source venv/bin/activate
-```
-
-### 5. Install dependencies
-
-```bash
+``` bash
+git clone https://github.com/koushik-badineni/Car-Price-Prediction-System-MSRP-Estimation-.git
+cd Car-Price-Prediction-System-MSRP-Estimation-
 pip install -r requirements.txt
 ```
 
----
+## ▶️ Run Locally
 
-## ▶️ How to Run
-
-If the project contains a Jupyter Notebook:
-
-```bash
-jupyter notebook
+``` bash
+streamlit run app.py
 ```
 
-Open the project notebook and execute the cells.
+## 📦 Requirements
 
-If the project contains a Streamlit application:
+``` text
+streamlit
+pandas
+numpy
+scikit-learn==1.6.1
+joblib
+```
 
-```bash
-streamlit run app.py
-``
+## ☁️ Deployment
 
----
+The application is deployed using Streamlit Community Cloud.
 
-## 🚀 Future Improvements
+Deployment configuration: - Repository:
+`koushik-badineni/Car-Price-Prediction-System-MSRP-Estimation-` -
+Branch: `main` - Main file: `app.py` - Python: `3.12`
 
-Some possible improvements include:
+## 🎯 Learning Outcomes
 
-* Hyperparameter tuning
-* Feature selection optimization
-* Testing multiple regression algorithms
-* Ensemble learning
-* Improving model accuracy
-* Deploying the model as a web application
-* Adding real-time vehicle price prediction
-* Creating a user-friendly dashboard
-
----
+-   Exploratory Data Analysis
+-   Data cleaning
+-   Feature preprocessing
+-   One-hot encoding
+-   Feature scaling
+-   Feature selection
+-   Regression modeling
+-   Random Forest
+-   Model evaluation
+-   ML pipeline creation
+-   Joblib model serialization
+-   Streamlit development
+-   GitHub version control
+-   Cloud deployment
 
 ## 👨‍💻 Author
 
-**Manikanta Koushik**
+**Koushik Badineni**
 
-This project was developed as part of my Machine Learning learning journey to gain practical experience in **Regression, Data Preprocessing, Exploratory Data Analysis, and Model Building**.
+GitHub: https://github.com/koushik-badineni
 
----
+------------------------------------------------------------------------
 
-## ⭐ Acknowledgment
-
-If you found this project useful, consider giving the repository a ⭐ on GitHub.
-
----
-
-## 📜 License
-
-This project is intended for educational and learning purposes.
+⭐ If you find this project useful, consider starring the repository.
