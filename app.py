@@ -3,16 +3,9 @@ import pandas as pd
 import joblib
 
 
-# -----------------------------
-# Load model and preprocessor
-# -----------------------------
-
-pipeline = joblib.load("car_price_pipeline.pkl")
-
-
-# -----------------------------
-# Page configuration
-# -----------------------------
+# ============================================================
+# PAGE CONFIGURATION
+# ============================================================
 
 st.set_page_config(
     page_title="Car Price Prediction",
@@ -21,64 +14,142 @@ st.set_page_config(
 )
 
 
-# -----------------------------
-# Title
-# -----------------------------
+# ============================================================
+# LOAD TRAINED PIPELINE
+# ============================================================
+
+@st.cache_resource
+def load_pipeline():
+    return joblib.load("car_price_pipeline.pkl")
+
+
+try:
+    pipeline = load_pipeline()
+
+except Exception as e:
+    st.error("Unable to load the trained model.")
+    st.exception(e)
+    st.stop()
+
+
+# ============================================================
+# GET CATEGORIES FROM TRAINED PIPELINE
+# ============================================================
+
+preprocessor = pipeline.named_steps["preprocessor"]
+
+# Categorical transformer
+categorical_encoder = (
+    preprocessor
+    .named_transformers_["cat"]
+)
+
+# Categories learned during training
+categories = categorical_encoder.categories_
+
+# Order of categorical columns in the pipeline
+categorical_columns = [
+    "Make",
+    "Model",
+    "Engine Fuel Type",
+    "Transmission Type",
+    "Driven_Wheels",
+    "Market Category",
+    "Vehicle Size",
+    "Vehicle Style"
+]
+
+# Create dictionary of valid values
+valid_categories = dict(
+    zip(categorical_columns, categories)
+)
+
+
+# ============================================================
+# PAGE TITLE
+# ============================================================
 
 st.title("🚗 Car Price Prediction System")
-st.write("Predict the Manufacturer's Suggested Retail Price (MSRP) of a car.")
+
+st.write(
+    "Predict the Manufacturer's Suggested Retail Price (MSRP) "
+    "of a car using Machine Learning."
+)
 
 
-# -----------------------------
-# Input section
-# -----------------------------
+st.info(
+    "Select values from the available options. "
+    "Only categories learned during model training are available."
+)
+
+
+# ============================================================
+# INPUT SECTION
+# ============================================================
 
 st.subheader("Enter Car Details")
-
 
 col1, col2 = st.columns(2)
 
 
-# Categorical inputs
+# ============================================================
+# CATEGORICAL FEATURES
+# ============================================================
 
 with col1:
 
-    make = st.text_input("Make", "BMW")
+    # Make
+    make = st.selectbox(
+        "Make",
+        valid_categories["Make"]
+    )
 
-    model_name = st.text_input("Model", "1 Series")
+    # Model
+    model_name = st.selectbox(
+        "Model",
+        valid_categories["Model"]
+    )
 
-    fuel_type = st.text_input(
+    # Fuel Type
+    fuel_type = st.selectbox(
         "Engine Fuel Type",
-        "premium unleaded (required)"
+        valid_categories["Engine Fuel Type"]
     )
 
-    transmission = st.text_input(
+    # Transmission
+    transmission = st.selectbox(
         "Transmission Type",
-        "MANUAL"
+        valid_categories["Transmission Type"]
     )
 
-    driven_wheels = st.text_input(
+    # Driven Wheels
+    driven_wheels = st.selectbox(
         "Driven Wheels",
-        "rear wheel drive"
+        valid_categories["Driven_Wheels"]
     )
 
-    market_category = st.text_input(
+    # Market Category
+    market_category = st.selectbox(
         "Market Category",
-        "Luxury"
+        valid_categories["Market Category"]
     )
 
-    vehicle_size = st.text_input(
+    # Vehicle Size
+    vehicle_size = st.selectbox(
         "Vehicle Size",
-        "Compact"
+        valid_categories["Vehicle Size"]
     )
 
-    vehicle_style = st.text_input(
+    # Vehicle Style
+    vehicle_style = st.selectbox(
         "Vehicle Style",
-        "Coupe"
+        valid_categories["Vehicle Style"]
     )
 
 
-# Numerical inputs
+# ============================================================
+# NUMERICAL FEATURES
+# ============================================================
 
 with col2:
 
@@ -86,73 +157,169 @@ with col2:
         "Year",
         min_value=1980,
         max_value=2026,
-        value=2011
+        value=2011,
+        step=1
     )
 
     engine_hp = st.number_input(
         "Engine HP",
         min_value=0.0,
-        value=300.0
+        value=300.0,
+        step=1.0
     )
 
     engine_cylinders = st.number_input(
         "Engine Cylinders",
         min_value=0.0,
-        value=6.0
+        value=6.0,
+        step=1.0
     )
 
     number_of_doors = st.number_input(
         "Number of Doors",
-        min_value=2.0,
-        max_value=6.0,
-        value=4.0
+        min_value=0.0,
+        value=4.0,
+        step=1.0
     )
 
     highway_mpg = st.number_input(
         "Highway MPG",
         min_value=0.0,
-        value=28.0
+        value=28.0,
+        step=1.0
     )
 
     city_mpg = st.number_input(
         "City MPG",
         min_value=0.0,
-        value=20.0
+        value=20.0,
+        step=1.0
     )
 
     popularity = st.number_input(
         "Popularity",
         min_value=0,
-        value=3916
+        value=3916,
+        step=1
     )
 
 
-# -----------------------------
-# Prediction
-# -----------------------------
+# ============================================================
+# PREDICTION
+# ============================================================
 
-if st.button("🔮 Predict Price"):
+st.divider()
+
+if st.button(
+    "🔮 Predict Price",
+    type="primary",
+    use_container_width=True
+):
+
+    # --------------------------------------------------------
+    # Basic validation
+    # --------------------------------------------------------
+
+    if number_of_doors <= 0:
+        st.error("Number of doors must be greater than 0.")
+        st.stop()
+
+    if engine_hp < 0:
+        st.error("Engine HP cannot be negative.")
+        st.stop()
+
+    if engine_cylinders < 0:
+        st.error("Engine cylinders cannot be negative.")
+        st.stop()
+
+    if highway_mpg < 0 or city_mpg < 0:
+        st.error("MPG values cannot be negative.")
+        st.stop()
+
+    if popularity < 0:
+        st.error("Popularity cannot be negative.")
+        st.stop()
+
+
+    # --------------------------------------------------------
+    # Create input DataFrame
+    # --------------------------------------------------------
 
     input_data = pd.DataFrame({
+
         "Make": [make],
+
         "Model": [model_name],
+
         "Year": [year],
+
         "Engine Fuel Type": [fuel_type],
+
         "Engine HP": [engine_hp],
+
         "Engine Cylinders": [engine_cylinders],
+
         "Transmission Type": [transmission],
+
         "Driven_Wheels": [driven_wheels],
+
         "Number of Doors": [number_of_doors],
+
         "Market Category": [market_category],
+
         "Vehicle Size": [vehicle_size],
+
         "Vehicle Style": [vehicle_style],
+
         "highway MPG": [highway_mpg],
+
         "city mpg": [city_mpg],
+
         "Popularity": [popularity]
     })
 
-    prediction = pipeline.predict(input_data)[0]
 
-    st.success(
-        f"Estimated MSRP: ${prediction:,.2f}"
-    )
+    # --------------------------------------------------------
+    # Generate prediction
+    # --------------------------------------------------------
+
+    try:
+
+        prediction = pipeline.predict(input_data)[0]
+
+        # Prevent displaying an invalid negative price
+        if prediction < 0:
+
+            st.warning(
+                "The model generated an unrealistic prediction "
+                "for these inputs. Please check the vehicle details."
+            )
+
+        else:
+
+            st.success(
+                f"💰 Estimated MSRP: ${prediction:,.2f}"
+            )
+
+            # ------------------------------------------------
+            # Display entered details
+            # ------------------------------------------------
+
+            st.subheader("Vehicle Details")
+
+            display_data = input_data.T
+
+            display_data.columns = ["Value"]
+
+            st.dataframe(
+                display_data,
+                use_container_width=True
+            )
+
+    except Exception as e:
+
+        st.error(
+            "Prediction failed. Please check the input values."
+        )
+
+        st.exception(e)
