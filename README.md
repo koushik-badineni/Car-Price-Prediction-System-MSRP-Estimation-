@@ -1,187 +1,131 @@
 # 🚗 Car Price Prediction System (MSRP Estimation)
 
 A machine learning web application that predicts the Manufacturer's
-Suggested Retail Price (MSRP) of a car from its specifications.
+Suggested Retail Price (MSRP) of a car based on its specifications.
 
 ## 🌐 Live Demo
 
 **Streamlit App:** https://bkkegcp7lgqzgrc3oduv9k.streamlit.app/
 
+---
+
 ## 📌 Project Overview
 
-This project builds a regression model to estimate vehicle MSRP using
-manufacturer, model, engine, transmission, drivetrain, fuel type,
-vehicle size, and vehicle style information.
+This project builds a supervised machine learning regression model to
+estimate the Manufacturer's Suggested Retail Price (MSRP) of a vehicle.
 
-The final solution uses a Random Forest Regressor inside a complete
-scikit-learn pipeline.
+The model uses vehicle specifications such as manufacturer, model,
+engine details, transmission, drivetrain, fuel type, vehicle size,
+vehicle style, mileage, and popularity.
+
+The final solution uses a **Random Forest Regressor** inside a complete
+scikit-learn pipeline that includes preprocessing, feature selection,
+and model prediction.
+
+The trained pipeline is saved using **Joblib** and integrated into an
+interactive **Streamlit web application**.
+
+---
+
+## 🎯 Problem Statement
+
+Car prices vary significantly depending on factors such as brand,
+model, engine specifications, fuel type, transmission, drivetrain,
+vehicle size, mileage, and popularity.
+
+The objective of this project is to build a machine learning regression
+system that can learn relationships between these vehicle attributes
+and MSRP and provide an estimated price for a given vehicle.
+
+---
 
 ## ✨ Features
 
--   🚘 Predict car MSRP from vehicle specifications
--   🔤 One-hot encoding for categorical features
--   📊 Standard scaling for numerical features
--   🎯 Feature selection using SelectPercentile
--   🌲 Random Forest regression
--   🔄 Complete preprocessing + feature selection + model pipeline
--   🌐 Interactive Streamlit application
--   ☁️ Streamlit Community Cloud deployment
+- 🚘 Predict car MSRP from vehicle specifications
+- 🔤 One-Hot Encoding for categorical features
+- 📊 Standard Scaling for numerical features
+- 🎯 Feature selection using SelectPercentile
+- 🌲 Random Forest Regression
+- 🔄 Complete preprocessing + feature selection + model pipeline
+- 💾 Model serialization using Joblib
+- ✅ Basic input validation
+- 🌐 Interactive Streamlit application
+- ☁️ Streamlit Community Cloud deployment
+
+---
 
 ## 🧰 Technologies Used
 
--   Python
--   Pandas
--   NumPy
--   Scikit-learn
--   Joblib
--   Streamlit
--   Google Colab
--   GitHub
--   Streamlit Community Cloud
+- Python
+- Pandas
+- NumPy
+- Scikit-learn
+- Joblib
+- Streamlit
+- Google Colab
+- GitHub
+- Streamlit Community Cloud
+
+---
 
 ## 📊 Dataset
 
+The dataset contains vehicle specifications used to predict MSRP.
+
 ### Input Features
 
-**Categorical** - Make - Model - Engine Fuel Type - Transmission Type -
-Driven_Wheels - Market Category - Vehicle Size - Vehicle Style
+#### 🔤 Categorical Features
 
-**Numerical** - Year - Engine HP - Engine Cylinders - Number of Doors -
-highway MPG - city mpg - Popularity
+- Make
+- Model
+- Engine Fuel Type
+- Transmission Type
+- Driven_Wheels
+- Market Category
+- Vehicle Size
+- Vehicle Style
 
-**Target** - MSRP
+#### 🔢 Numerical Features
+
+- Year
+- Engine HP
+- Engine Cylinders
+- Number of Doors
+- highway MPG
+- city mpg
+- Popularity
+
+#### 🎯 Target Variable
+
+- MSRP
+
+---
 
 ## 🔄 Machine Learning Workflow
 
-``` text
+```text
 Raw Dataset
-    ↓
+     ↓
 Data Cleaning
-    ↓
+     ↓
+Exploratory Data Analysis
+     ↓
 Train-Test Split
-    ↓
+     ↓
 Categorical / Numerical Feature Separation
-    ↓
+     ↓
 One-Hot Encoding + Standard Scaling
-    ↓
+     ↓
 SelectPercentile Feature Selection
-    ↓
+     ↓
 Random Forest Regressor
-    ↓
+     ↓
 Complete ML Pipeline
-    ↓
+     ↓
 Model Evaluation
-    ↓
+     ↓
 Joblib Serialization
-    ↓
-Streamlit Web App
-    ↓
+     ↓
+Streamlit Web Application
+     ↓
 Streamlit Community Cloud
-```
-
-## 🤖 Final Model
-
-``` python
-RandomForestRegressor(
-    n_estimators=200,
-    max_depth=20,
-    random_state=42
-)
-```
-
-The complete preprocessing, feature selection, and model are stored in:
-
-``` text
-car_price_pipeline.pkl
-```
-
-## 📈 Model Performance
-
-  Metric            Score
-  ---------- ------------
-  R² Score         0.9498
-  MAE          \$2,683.31
-
-## 🖥️ Streamlit Application
-
-The app accepts raw car details and returns an estimated MSRP.
-
-The saved pipeline is loaded with Joblib:
-
-``` python
-pipeline = joblib.load("car_price_pipeline.pkl")
-prediction = pipeline.predict(input_data)[0]
-```
-
-## 📁 Repository Structure
-
-``` text
-Car-Price-Prediction-System-MSRP-Estimation-
-│
-├── app.py
-├── car_price_pipeline.pkl
-├── requirements.txt
-├── README.md
-├── Regression_project_EDA.ipynb
-├── car_MSRP.csv
-└── cleaned_csv.CSV
-```
-
-## ⚙️ Installation
-
-``` bash
-git clone https://github.com/koushik-badineni/Car-Price-Prediction-System-MSRP-Estimation-.git
-cd Car-Price-Prediction-System-MSRP-Estimation-
-pip install -r requirements.txt
-```
-
-## ▶️ Run Locally
-
-``` bash
-streamlit run app.py
-```
-
-## 📦 Requirements
-
-``` text
-streamlit
-pandas
-numpy
-scikit-learn==1.6.1
-joblib
-```
-
-## ☁️ Deployment
-
-The application is deployed using Streamlit Community Cloud.
-
-Deployment configuration: - Repository:
-`koushik-badineni/Car-Price-Prediction-System-MSRP-Estimation-` -
-Branch: `main` - Main file: `app.py` - Python: `3.12`
-
-## 🎯 Learning Outcomes
-
--   Exploratory Data Analysis
--   Data cleaning
--   Feature preprocessing
--   One-hot encoding
--   Feature scaling
--   Feature selection
--   Regression modeling
--   Random Forest
--   Model evaluation
--   ML pipeline creation
--   Joblib model serialization
--   Streamlit development
--   GitHub version control
--   Cloud deployment
-
-## 👨‍💻 Author
-
-**Koushik Badineni**
-
-GitHub: https://github.com/koushik-badineni
-
-------------------------------------------------------------------------
-
-⭐ If you find this project useful, consider starring the repository.
